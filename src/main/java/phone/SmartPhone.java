@@ -8,7 +8,7 @@ public class SmartPhone {
     private Camera SelfieCamera;
     Display Display;
     private Float Battery; // mAh
-    private Float ChargeLevel; // mA
+    private Float ChargeLevel = 0F; // percent
     private boolean isFastCharge;
     private float mainMemory; // gb
     String MemoryTechnology; // UFS, lpddr
@@ -148,4 +148,22 @@ public class SmartPhone {
         }
         return sb.toString();
     }
+
+    public void ChargeDuringTime(float mA, float durationSec){
+        /* если фастчаржа нет тогда максимальный ток зарядки будет будем считать 500ма */
+        Float consume_mA = this.isFastCharge ? mA : 500F ;
+        Float durationHours = durationSec / 3600;
+        Float remainingChargeMAH = ( 1 - this.ChargeLevel / 100 ) * this.Battery;
+        if ( remainingChargeMAH < durationHours * consume_mA){
+            this.ChargeLevel = 100F;
+        }
+        else {
+            this.ChargeLevel += 100 * ( durationHours * consume_mA ) / this.Battery;
+        }
+
+    }
+    public Float getChargeLevel() {
+        return ChargeLevel;
+    }
+
 };
