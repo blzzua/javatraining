@@ -77,11 +77,19 @@ public class Lesson2 {
         SmartPhone redminote4 = new SmartPhone("Xiaomi Redmi Note 4");
         redminote4.setBattery(4100F);
         redminote4.setCardSlot(true);
+
         redminote4.setDimension(151, 76);
         redminote4.setMainCamera(13, false);
 
         System.out.println(redminote4);
 
+        redminote4.setFastCharge(true);
+        System.out.println("start  level:" + redminote4.getChargeLevel());
+        int timeGranularity = 600;
+        for (int i = 0 ; i <= 2*3600 ; i += timeGranularity) {
+            redminote4.ChargeDuringTime(2500, timeGranularity);
+            System.out.println("charge time "+i+" sec, level:" + redminote4.getChargeLevel());
+        }
     }
 
 
