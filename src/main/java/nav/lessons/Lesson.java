@@ -17,15 +17,13 @@ public class Lesson {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        int distance = 0;
-
         String command = br.readLine();
         while (!"exit".equals(command)) {
             processCommand(car1, command);
-            distance += car1.getVelocity();
+
             System.out.println("Velocity: " + car1.getVelocity() +
                     ", gas left: " + car1.getVolumeGasTankCur() +
-                    ", total distance: " + distance);
+                    ", total distance: " + car1.getDistance());
             command = br.readLine();
         }
 
@@ -61,7 +59,7 @@ public class Lesson {
         }
         car.perIteration();
     }
-    private static void accCar (Car car, String[] splitCommand){
+    private static void accCar(Car car, String[] splitCommand){
         if (splitCommand.length == 1) {
             car.acc();
         }
@@ -70,7 +68,7 @@ public class Lesson {
         }
     }
 
-    private static void refuelCar (Car car, String[] splitCommand){
+    private static void refuelCar(Car car, String[] splitCommand){
         // String[] splitCommand = command.split(" ");
         double fuel;
 

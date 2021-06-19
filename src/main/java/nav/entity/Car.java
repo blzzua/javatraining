@@ -14,6 +14,7 @@ public class Car {
     private double velocity;
     private double volumeGasTankCur;
     private double gasQuality ;
+    private double distance;
     private Driver driver;
 
 
@@ -55,6 +56,7 @@ public class Car {
         } else {
             dec();
         }
+        this.distance += this.getVelocity();
     }
 
     public void acc() {
@@ -95,6 +97,7 @@ public class Car {
         double gasQualityFact = 0;
 
         if (volumeGas > 0 &&
+                gasQuality > 0 &&
                 this.velocity == 0 &&
                 !this.powerOn &&
                 this.volumeGasTankMax != this.volumeGasTankCur) {
@@ -146,6 +149,9 @@ public class Car {
             result = coef > 1.0 ? 1.0 : coef;
         }
         return result;
+    }
+    public double getDistance() {
+        return distance;
     }
 
 }
