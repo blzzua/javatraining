@@ -15,6 +15,7 @@ public class Car {
     private int volumeGasTankCur;
     private Driver driver;
 
+
     public Car(int acceleration,
                int deceleration,
                int maxVelocity,
@@ -37,6 +38,10 @@ public class Car {
         if (this.driver != null && this.velocity == 0) {
             this.driver = null;
         }
+    }
+
+    public Driver getDriver() {
+        return driver;
     }
 
     public void perIteration() {

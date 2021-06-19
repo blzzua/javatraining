@@ -41,13 +41,15 @@ public class Lesson {
             case "set driver":
                 Driver driver = new Driver("Вася");
                 car.setDriver(driver);
+                System.out.println("There is " + ( car.getDriver() != null  ? "a driver" : "no driver" ) + " inside" );
                 break;
             case "unset driver":
                 car.unsetDriver();
+                System.out.println("There is " + ( car.getDriver() != null  ? "a driver" : "no driver" ) + " inside" );
                 break;
             case "power":
                 boolean powerOn = car.powerSwitch();
-                System.out.println("Now is " + powerOn);
+                System.out.println("Power is " + ( powerOn ? "on" : "off" ) );
                 break;
             case "acc":
                 car.acc();
