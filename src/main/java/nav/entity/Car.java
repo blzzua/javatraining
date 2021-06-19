@@ -3,16 +3,17 @@ package nav.entity;
 public class Car {
 
     //Заводские х-стики
-    private final int acceleration;
-    private final int deceleration;
-    private final int maxVelocity;
-    private final int volumeGasTankMax;
-    private final int gasConsumptionPerCycle;
+    private final double acceleration;
+    private final double deceleration;
+    private final double maxVelocity;
+    private final double volumeGasTankMax;
+    private final double gasConsumptionPerCycle;
 
     //Изменяемые при работе
     private boolean powerOn;
-    private int velocity;
-    private int volumeGasTankCur;
+    private double velocity;
+    private double volumeGasTankCur;
+    private double gasQuality ;
     private Driver driver;
 
 
@@ -57,11 +58,15 @@ public class Car {
     }
 
     public void acc() {
+        acc(1.0d);
+    }
+    public void acc(double coef) {
         if (this.powerOn && this.velocity != this.maxVelocity) {
-            int factAccMax = this.maxVelocity - this.velocity;
-            int factAcc = this.acceleration > factAccMax
+            double factAccMax = this.maxVelocity - this.velocity;
+            double curAcc = this.acceleration * this.gasQuality * preprocessCoef(coef);
+            double factAcc = curAcc > factAccMax
                     ? factAccMax
-                    : this.acceleration;
+                    : curAcc;
             this.velocity += factAcc;
         }
     }
@@ -78,47 +83,70 @@ public class Car {
         this.powerOn = driver != null && volumeGasTankCur > 0 && !this.powerOn;
         return this.powerOn;
     }
+    public double refuel() {
+        return refuel(this.volumeGasTankMax, 1.0);
+    }
 
-    public int refuel(int volumeGas) {
-        int gasFact = 0;
+    public double refuel(double volumeGas) {
+        return refuel(volumeGas, 1.0);
+    }
+    public double refuel(double volumeGas, double gasQuality) {
+        double gasFact = 0;
+        double gasQualityFact = 0;
 
         if (volumeGas > 0 &&
                 this.velocity == 0 &&
                 !this.powerOn &&
                 this.volumeGasTankMax != this.volumeGasTankCur) {
-            int volumeAvailableLeft = this.volumeGasTankMax - this.volumeGasTankCur;
+            double volumeAvailableLeft = this.volumeGasTankMax - this.volumeGasTankCur;
             gasFact = volumeAvailableLeft > volumeGas ? volumeGas : volumeAvailableLeft;
+            gasQualityFact = ((this.volumeGasTankCur * this.gasQuality)  + ( gasFact * gasQuality )) / (this.volumeGasTankCur + gasFact);
             this.volumeGasTankCur += gasFact;
+            this.gasQuality = gasQualityFact;
         }
 
         return gasFact;
     }
 
-    public int getAcceleration() {
+    public double getAcceleration() {
         return acceleration;
     }
 
-    public int getDeceleration() {
+    public double getDeceleration() {
         return deceleration;
     }
 
-    public int getMaxVelocity() {
+    public double getMaxVelocity() {
         return maxVelocity;
     }
 
-    public int getVolumeGasTankMax() {
+    public double getVolumeGasTankMax() {
         return volumeGasTankMax;
     }
 
-    public int getGasConsumptionPerCycle() {
+    public double getGasConsumptionPerCycle() {
         return gasConsumptionPerCycle;
     }
 
-    public int getVelocity() {
+    public double getVelocity() {
         return velocity;
     }
 
-    public int getVolumeGasTankCur() {
+    public double getVolumeGasTankCur() {
         return volumeGasTankCur;
     }
+
+    public double getGasQuality() {
+        return gasQuality;
+    }
+
+    private static double preprocessCoef(double coef){
+        double result = 0;
+        if (coef > 0) {
+            result = coef > 1.0 ? 1.0 : coef;
+        }
+        return result;
+    }
+
 }
+
