@@ -23,4 +23,12 @@ public enum GasQuality {
     public double getPricePerLiter() {
         return pricePerLiter;
     }
+    public static boolean isValidFuel(String value){
+        for (GasQuality enumValues : GasQuality.values()) {
+            if (value.equals(enumValues.name())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -1,5 +1,6 @@
 package nav.practise.lessons;
 
+import nav.practise.entity.GasQuality;
 import nav.practise.entity.vehicle.Vehicle;
 import nav.practise.entity.vehicle.ground.Car;
 import nav.practise.entity.Driver;
@@ -9,6 +10,7 @@ import nav.practise.entity.vehicle.ground.Tractor;
 
 import java.util.Scanner;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 public class Lesson {
 
@@ -83,11 +85,27 @@ public class Lesson {
 
     private static void refuelVehicle(Vehicle vehicle, String[] splitCommand) {
         if (splitCommand.length >= 3) {
-            GasStation.getInstance().refuelOut(
-                    Integer.parseInt(splitCommand[1]),
+            if (GasQuality.isValidFuel(splitCommand[1])) {
+                GasStation.getInstance().refuelOut(
+                    splitCommand[1],
                     Double.parseDouble(splitCommand[2]),
                     vehicle
-            );
+                );
+            }
+            else {
+                Pattern intPattern = Pattern.compile("^d+?$");
+                if (intPattern.matcher(splitCommand[1]).matches()) {
+                    GasStation.getInstance().refuelOut(
+                            Integer.parseInt(splitCommand[1]),
+                            Double.parseDouble(splitCommand[2]),
+                            vehicle
+                    );
+                }
+                else {
+                    System.err.println("cannot refuel via " + splitCommand[1]);
+                }
+            }
+
         }
     }
 

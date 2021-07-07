@@ -24,7 +24,26 @@ public class GasStation {
         return instance;
     }
 
-    public double refuelOut(int num, double volumeGas, RefuelableIn refuelableIn) {
+       public double refuelOut(String GasQualityString, double volumeGas, RefuelableIn refuelableIn) {
+           // GasQuality selectedGasQuality = GasQuality.valueOf(GasQuality);
+           if (GasQuality.isValidFuel(GasQualityString)) {
+               int GasolineId = getGasolineIdByName(GasQualityString);
+               return refuelOut(GasolineId, volumeGas, refuelableIn);
+           }
+           else {
+               return 0d;
+           }
+       }
+       public int getGasolineIdByName(String GasQualityString){
+           for (int i =0 ; i < this.gasolines.length ;  i++) {
+               if (GasQualityString.equals(gasolines[i].getGasQuality().name())){
+                   return i;
+               }
+           }
+           return -1;
+       };
+
+        public double refuelOut(int num, double volumeGas, RefuelableIn refuelableIn) {
         double result = 0;
 
         if (num >= 0 || num < gasolines.length) {

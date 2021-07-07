@@ -24,4 +24,8 @@ public class Gasoline implements RefuelableOut {
 
         return result;
     }
+
+    public GasQuality getGasQuality() {
+        return gasQuality;
+    }
 }
