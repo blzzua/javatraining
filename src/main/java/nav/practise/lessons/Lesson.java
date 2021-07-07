@@ -1,6 +1,7 @@
 package nav.practise.lessons;
 
 import nav.practise.entity.GasQuality;
+import nav.practise.entity.barrels.Canister;
 import nav.practise.entity.vehicle.Vehicle;
 import nav.practise.entity.vehicle.ground.Car;
 import nav.practise.entity.Driver;
@@ -8,6 +9,7 @@ import nav.practise.entity.refuel.GasStation;
 import nav.practise.entity.scheduling.Iterating;
 import nav.practise.entity.vehicle.ground.Tractor;
 
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -19,7 +21,7 @@ public class Lesson {
                  new Car(),
                  new Tractor()
         };
-
+        Collection<Canister> canisters;
 
         Scanner scanner = new Scanner(
                 Lesson.class.getClassLoader().getResourceAsStream("commands.txt")
@@ -93,7 +95,7 @@ public class Lesson {
                 );
             }
             else {
-                Pattern intPattern = Pattern.compile("^d+?$");
+                Pattern intPattern = Pattern.compile("^\\d+?$");
                 if (intPattern.matcher(splitCommand[1]).matches()) {
                     GasStation.getInstance().refuelOut(
                             Integer.parseInt(splitCommand[1]),

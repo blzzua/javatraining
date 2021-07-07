@@ -1,5 +1,6 @@
 refuel GOOD 10
 refuel ROCKET_FUEL 10
+refuel 1 10
 set_driver
 power
 acc 0.8

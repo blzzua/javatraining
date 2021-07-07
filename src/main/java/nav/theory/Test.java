@@ -1,18 +1,28 @@
 package nav.theory;
+import nav.practise.entity.GasQuality;
+import nav.practise.entity.refuel.GasStation;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+
 public class Test {
 
     public static void main(String... args) {
         // System.out.println(sum(1,2,0,3,4));
         //testImpl(null, 1);
-        testImpl(0, 1);
+        // testImpl(0, 1);
         // testImpl(0, 1, 2);
         // testImpl(0, 1, 1, 2);
+
+
+        // GasQuality selectedGasQuality = GasQuality.valueOf(gasQ);
+        // System.out.println("Arrays.stream(GasQuality.values()).contains(gasQ) = " + (Arrays.asList(values).contains("GOOD")));
+
+
     }
 
     private static void testImpl(Integer... value){
