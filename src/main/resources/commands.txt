@@ -1,0 +1,9 @@
+refuel 1 10
+set_driver
+power
+acc 0.8
+acc 1
+acc 1
+dec 1
+
+

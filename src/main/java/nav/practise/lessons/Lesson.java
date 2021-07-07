@@ -1,100 +1,94 @@
 package nav.practise.lessons;
 
-import nav.practise.entity.Car;
+import nav.practise.entity.vehicle.Vehicle;
+import nav.practise.entity.vehicle.ground.Car;
 import nav.practise.entity.Driver;
+import nav.practise.entity.refuel.GasStation;
+import nav.practise.entity.scheduling.Iterating;
+import nav.practise.entity.vehicle.ground.Tractor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Lesson {
 
+    public static void main(String... args){
+        Vehicle[] vehicles = new Vehicle[] {
+                 new Car(),
+                 new Tractor()
+        };
 
-    public static void main(String... args) throws IOException {
-        System.out.println("Hello!\n");
 
-        Car car1 = new Car(3, 5, 100, 50, 1);
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        int distance = 0;
-
-        String command = br.readLine();
-        while (!"exit".equals(command)) {
-            processCommand(car1, command);
-            distance += car1.getVelocity();
-            System.out.println("Velocity: " + car1.getVelocity() +
-                    ", gas left: " + car1.getVolumeGasTankCur() +
-                    ", gas quality " + car1.getGasQuality() +
-                    ", with driver " + (car1.getDriver() != null) +
-                    ", total distance: " + distance);
-            command = br.readLine();
+        Scanner scanner = new Scanner(
+                Lesson.class.getClassLoader().getResourceAsStream("commands.txt")
+        );
+        while (scanner.hasNextLine()) {
+            String command = scanner.nextLine();
+            System.out.println("Input command: " + command);
+            for (int i = 0; i < vehicles.length; i++) {
+                processCommand(vehicles[i], command);
+                afterCommand(vehicles[i]);
+                System.out.println("Vehicle status: " + vehicles[i]);
+            }
         }
 
-        System.out.println("\nGood Bye!");
+        System.out.println("Goodbye!");
     }
 
-    private static void processCommand(Car car, String command) {
+    private static void processCommand(Vehicle vehicle, String command) {
         String[] splitCommand = command.split(" ");
 
         switch (splitCommand[0]) {
             case "refuel":
-                refuelCar(car, splitCommand);
+                refuelVehicle(vehicle, splitCommand);
                 break;
             case "set_driver":
                 Driver driver = new Driver("Вася");
-                car.setDriver(driver);
+                vehicle.setDriver(driver);
                 break;
             case "unset_driver":
-                car.unsetDriver();
+                vehicle.unsetDriver();
                 break;
             case "power":
-                boolean powerOn = car.powerSwitch();
-                System.out.println("Now is " + powerOn);
+                vehicle.powerSwitch();
                 break;
             case "acc":
-                accCar(car, splitCommand);
+                accVehicle(vehicle, splitCommand);
                 break;
             case "dec":
-                decCar(car, splitCommand);
+                decVehicle(vehicle, splitCommand);
                 break;
         }
-        car.perIteration();
     }
 
-    private static void decCar(Car car,  String[] splitCommand) {
+    private static void afterCommand(Iterating iterating) {
+        iterating.perIteration();
+    }
+
+    private static void decVehicle(Vehicle vehicle, String[] splitCommand) {
         if (splitCommand.length == 1) {
-            car.dec();
+            vehicle.dec();
         } else {
-            car.dec(Double.parseDouble(splitCommand[1]));
+            vehicle.dec(Double.parseDouble(splitCommand[1]));
         }
     }
 
-    private static void accCar(Car car,  String[] splitCommand) {
+    private static void accVehicle(Vehicle Vehicle, String[] splitCommand) {
         if (splitCommand.length == 1) {
-            car.acc();
+            Vehicle.acc();
         } else {
-            car.acc(Double.parseDouble(splitCommand[1]));
+            Vehicle.acc(Double.parseDouble(splitCommand[1]));
         }
     }
 
-    private static void refuelCar(Car car, String[] splitCommand) {
-        double fuel;
-
-        switch (splitCommand.length) {
-            case 1:
-                fuel = car.refuel();
-                break;
-            case 2:
-                fuel = car.refuel(Double.parseDouble(splitCommand[1]));
-                break;
-            default:
-                fuel = car.refuel(
-                        Double.parseDouble(splitCommand[1]),
-                        Double.parseDouble(splitCommand[2])
-                );
+    private static void refuelVehicle(Vehicle vehicle, String[] splitCommand) {
+        if (splitCommand.length >= 3) {
+            GasStation.getInstance().refuelOut(
+                    Integer.parseInt(splitCommand[1]),
+                    Double.parseDouble(splitCommand[2]),
+                    vehicle
+            );
         }
-
-        System.out.println("Was refueled for " + fuel);
     }
+
 }
