@@ -2,8 +2,12 @@ package nav.practise.entity.vehicle.ground;
 
 import nav.practise.entity.Driver;
 import nav.practise.entity.GasQuality;
+import nav.practise.entity.barrels.Canister;
 import nav.practise.entity.scheduling.Iterating;
 import nav.practise.entity.vehicle.Vehicle;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class GroundVehicle implements Vehicle, Iterating {
 
@@ -19,6 +23,7 @@ public class GroundVehicle implements Vehicle, Iterating {
     private double volumeGasTankCur;
     private double gasQuality;
     private Driver driver;
+    private Collection<Canister> canisters;
 
     public GroundVehicle(int acceleration,
                          int deceleration,
@@ -208,4 +213,17 @@ public class GroundVehicle implements Vehicle, Iterating {
 
         return result;
     }
+
+    public void addCanister(Canister canister) {
+        this.canisters.add(canister);
+    }
+    public long getCanistersCount() {
+        return this.canisters.stream().count();
+    }
+    public Canister getCanister(int id) {
+        Canister[] c = (Canister[]) this.canisters.toArray();
+        return c[id];
+    }
+
+
 }

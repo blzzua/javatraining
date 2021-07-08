@@ -21,7 +21,6 @@ public class Lesson {
                  new Car(),
                  new Tractor()
         };
-        Collection<Canister> canisters;
 
         Scanner scanner = new Scanner(
                 Lesson.class.getClassLoader().getResourceAsStream("commands.txt")
@@ -61,6 +60,12 @@ public class Lesson {
                 break;
             case "dec":
                 decVehicle(vehicle, splitCommand);
+                break;
+            case "buy_canister":
+                buy_canister(vehicle, splitCommand);
+                break;
+            case "fill_canister":
+                fill_canister(vehicle, splitCommand);
                 break;
         }
     }
@@ -109,6 +114,33 @@ public class Lesson {
             }
 
         }
+    }
+
+    private static void buy_canister(Vehicle vehicle, String[] splitCommand){
+        if (splitCommand.length >= 2){
+            Canister c = new Canister(Double.parseDouble(splitCommand[1]));
+            System.out.println("DEBUG: bought canister" +  c + "volume:" + splitCommand[1]);
+            vehicle.addCanister(c);
+        }
+        else {
+            System.err.println("cannot buy canister");
+        }
+    }
+
+    private static void fill_canister(Vehicle vehicle, String[] splitCommand) {
+        // fill_canister 1 20 - fill canister index 1 via 20 liters
+        if (splitCommand.length >= 3){
+            int canisterIndex = Integer.parseInt(splitCommand[1]);
+            Double Liters = Double.parseDouble(splitCommand[2]);
+            if ( canisterIndex < vehicle.getCanistersCount() ) {
+                Canister selectedCanister = vehicle.getCanister(canisterIndex);
+                selectedCanister.refuelIn(Liters, GasQuality.BAD);
+                System.out.println("DEBUG: canister " + canisterIndex + " filled " + Liters +  " Liters." );
+            }else{
+                System.err.println("cannot fill canister, no such canister");
+            }
+        }
+
     }
 
 }

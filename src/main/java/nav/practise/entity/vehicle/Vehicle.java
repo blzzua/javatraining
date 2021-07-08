@@ -1,6 +1,7 @@
 package nav.practise.entity.vehicle;
 
 import nav.practise.entity.Driver;
+import nav.practise.entity.barrels.Canister;
 import nav.practise.entity.refuel.RefuelableIn;
 import nav.practise.entity.scheduling.Iterating;
 
@@ -41,4 +42,8 @@ public interface Vehicle extends RefuelableIn, Iterating {
     boolean isPowerOn();
 
     Driver getDriver();
+
+    void addCanister(Canister canister);
+    long getCanistersCount();
+    Canister getCanister(int id);
 }
